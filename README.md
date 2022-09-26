@@ -1,1 +1,1 @@
-# Opensea-clone
+# Opensea Clone
