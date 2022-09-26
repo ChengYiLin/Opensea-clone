@@ -1,7 +1,15 @@
 import type { NextPage } from "next";
 import Head from "next/head";
+import { useAddress, useMetamask } from "@thirdweb-dev/react";
 
 const Home: NextPage = () => {
+    const connectMetamask = useMetamask();
+    const userAddress = useAddress();
+
+    const handelConnect = () => {
+        connectMetamask();
+    };
+
     return (
         <div>
             <Head>
@@ -15,6 +23,18 @@ const Home: NextPage = () => {
             <h1 className="p-8 text-center text-3xl font-bold text-sky-400 underline">
                 Opensea
             </h1>
+            <div className="container mx-auto">
+                <div className="py-4">
+                    <p>User : {userAddress || "undefined"}</p>
+                </div>
+
+                <button
+                    className="rounded-md border bg-sky-200 py-2 px-4"
+                    onClick={handelConnect}
+                >
+                    Connect MetaMask
+                </button>
+            </div>
         </div>
     );
 };
