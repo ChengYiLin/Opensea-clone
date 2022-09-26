@@ -19,8 +19,8 @@ const Layout: FC<ILayout> = ({ children }) => {
         <div className="flex min-h-screen w-full flex-col overflow-hidden">
             <header className="border-b-2 bg-white">
                 <div className="container mx-auto flex justify-between py-4 px-4 sm:px-0">
-                    <Link href={"/"} className="cursor-pointer">
-                        <h1 className="flex items-center font-extrabold">
+                    <Link href={"/"}>
+                        <h1 className="flex cursor-pointer items-center font-extrabold">
                             <Image src="/opensea.svg" width={36} height={36} />
                             <span className="pl-2 text-xl sm:pl-4 sm:text-2xl">
                                 Opensea
@@ -35,7 +35,7 @@ const Layout: FC<ILayout> = ({ children }) => {
                     </button>
                 </div>
             </header>
-            <main className="grow pt-14">{children}</main>
+            <main className="grow">{children}</main>
             <footer className="bg-blue-500">
                 <div className="container mx-auto">
                     <p className="py-4 text-center text-white">
