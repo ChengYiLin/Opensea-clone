@@ -3,21 +3,16 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-import type { SyntheticEvent } from "react";
 import {
     useContract,
     useListing,
-    useNFT,
     useBuyNow,
     useAddress,
 } from "@thirdweb-dev/react";
 import { ListingType, Marketplace } from "@thirdweb-dev/sdk";
 import { FaEthereum, FaRegHeart } from "react-icons/fa";
 
-import {
-    MARKETPLACE_CONTRACT_ADDRESS,
-    NFT_CONTRACT_ADDRESS,
-} from "../../constant/app.constant";
+import { MARKETPLACE_CONTRACT_ADDRESS } from "../../constant/app.constant";
 import Loading from "../../components/Loading";
 
 interface IDetail {
@@ -40,15 +35,8 @@ const Detail: NextPage<IDetail> = () => {
     const { data: marketPlaceInfo, isLoading: IsMarketInfoLoading } =
         useListing(marketContract, tokenId);
 
-    // Get NFT Info
-    const { contract: nftContract } = useContract(NFT_CONTRACT_ADDRESS);
-    const { data: nftInfo, isLoading: isNftInfoLoading } = useNFT(
-        nftContract,
-        tokenId
-    );
-
     // handle Buy Now
-    const { mutate: buyNow, isLoading: isBuyingNow } =
+    const { mutateAsync: buyNow, isLoading: isBuyingNow } =
         useBuyNow(marketContract);
 
     const handleBuyNow = (listingId: string) => {
@@ -61,6 +49,9 @@ const Detail: NextPage<IDetail> = () => {
             type: ListingType.Direct,
             id: listingId,
             buyAmount: 1,
+        }).catch((err) => {
+            console.log(err?.Message);
+            alert("Transaction failed.\n Please Check you have enough Eth");
         });
     };
 
@@ -80,7 +71,7 @@ const Detail: NextPage<IDetail> = () => {
     return (
         <div>
             <Head>
-                <title>Detail - </title>
+                <title>Detail - {marketPlaceInfo?.asset.name}</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <div className="container mx-auto py-8">
@@ -137,17 +128,7 @@ const Detail: NextPage<IDetail> = () => {
                                 )}
                             </span>
                         </div>
-                        <div className="py-4">
-                            {nftInfo?.type ? (
-                                <p className="inline-block rounded-full bg-slate-400 py-2 px-4 text-sm text-slate-50">
-                                    {nftInfo?.type}
-                                </p>
-                            ) : (
-                                <p className="inline-block h-9 w-20 animate-pulse rounded-full bg-slate-400" />
-                            )}
-                        </div>
-
-                        <div className="overflow-hidden rounded-lg border-2 border-gray-300">
+                        <div className="mt-8 overflow-hidden rounded-lg border-2 border-gray-300">
                             <div className="bg-sky-50 py-2 px-4">
                                 <p>Current Price</p>
                                 <div className="flex items-center gap-2 py-4 text-3xl">
@@ -199,9 +180,7 @@ const Detail: NextPage<IDetail> = () => {
                     </div>
                 </div>
             </div>
-            <Loading
-                open={isNftInfoLoading || IsMarketInfoLoading || isBuyingNow}
-            />
+            <Loading open={IsMarketInfoLoading || isBuyingNow} />
         </div>
     );
 };

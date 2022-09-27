@@ -24,7 +24,7 @@ const NfcCard: FC<INfcCard> = ({ imageUrl, name, price, tokenId, qty }) => {
     const { contract: marketContract } = useContract<Marketplace>(
         MARKETPLACE_CONTRACT_ADDRESS
     );
-    const { mutate: buyNow, isLoading } = useBuyNow(marketContract);
+    const { mutateAsync: buyNow, isLoading } = useBuyNow(marketContract);
 
     const handleBuyNow = (e: SyntheticEvent, listingId: string) => {
         e.preventDefault();
@@ -39,6 +39,9 @@ const NfcCard: FC<INfcCard> = ({ imageUrl, name, price, tokenId, qty }) => {
             type: ListingType.Direct,
             id: listingId,
             buyAmount: 1,
+        }).catch((err) => {
+            console.log(err?.Message);
+            alert("Transaction failed.\n Please Check you have enough Eth");
         });
     };
 
