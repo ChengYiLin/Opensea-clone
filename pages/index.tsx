@@ -26,8 +26,10 @@ const Home: NextPage = () => {
                 name: nft.asset.name ? nft.asset.name.toString() : "",
                 price: nft.buyoutCurrencyValuePerToken.displayValue,
                 tokenId: nft.id,
+                qty: +nft.quantity.toString(),
             }));
 
+            console.log(nfts);
             setNftList(nftListViewData);
         }
     }, [JSON.stringify(nfts)]);
@@ -54,8 +56,11 @@ const Home: NextPage = () => {
                     </div>
                     <div className="grid grid-cols-2 gap-8 px-4 sm:grid-cols-5 sm:px-0">
                         {isLoading ? (
-                            Array.from(Array(10)).map(() => (
-                                <div className="animate-pulse cursor-pointer overflow-hidden rounded-md border border-slate-300 shadow">
+                            Array.from(Array(10)).map((_, index) => (
+                                <div
+                                    key={`skeleton_${index}`}
+                                    className="animate-pulse cursor-pointer overflow-hidden rounded-md border border-slate-300 shadow"
+                                >
                                     <div className="h-[280px] bg-slate-400" />
                                     <div className="p-2">
                                         <p className="h-4 w-[70%] bg-slate-400"></p>
@@ -73,6 +78,7 @@ const Home: NextPage = () => {
                                         name={nftInfo.name}
                                         price={nftInfo.price}
                                         tokenId={nftInfo.tokenId}
+                                        qty={nftInfo.qty}
                                     />
                                 ))}
                             </>
