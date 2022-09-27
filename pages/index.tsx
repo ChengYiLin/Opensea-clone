@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
-import { useState, useEffect } from "react";
 import Head from "next/head";
-import { useContract, useActiveListings } from "@thirdweb-dev/react";
+import { useState, useEffect } from "react";
+import { useContract, useListings } from "@thirdweb-dev/react";
 import type { Marketplace } from "@thirdweb-dev/sdk";
 
 import { MARKETPLACE_CONTRACT_ADDRESS } from "../constant/app.constant";
@@ -13,7 +13,7 @@ const Home: NextPage = () => {
     const { contract: marketContract } = useContract<Marketplace>(
         MARKETPLACE_CONTRACT_ADDRESS
     );
-    const { data: nfts, isLoading } = useActiveListings(marketContract, {
+    const { data: nfts, isLoading } = useListings(marketContract, {
         start: 0,
         count: 25,
     });
@@ -24,6 +24,7 @@ const Home: NextPage = () => {
                 imageUrl: nft.asset.image || "",
                 name: nft.asset.name ? nft.asset.name.toString() : "",
                 price: nft.buyoutCurrencyValuePerToken.displayValue,
+                tokenId: nft.id,
             }));
 
             setNftList(nftListViewData);
@@ -60,6 +61,7 @@ const Home: NextPage = () => {
                                     imageUrl={nftInfo.imageUrl}
                                     name={nftInfo.name}
                                     price={nftInfo.price}
+                                    tokenId={nftInfo.tokenId}
                                 />
                             ))}
                         </div>
