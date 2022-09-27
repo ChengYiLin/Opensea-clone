@@ -1,10 +1,17 @@
-import type { NextPage, GetServerSideProps } from "next";
+import type { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-import { useContract, useListing, useNFT } from "@thirdweb-dev/react";
-import { Marketplace } from "@thirdweb-dev/sdk";
+import type { SyntheticEvent } from "react";
+import {
+    useContract,
+    useListing,
+    useNFT,
+    useBuyNow,
+    useAddress,
+} from "@thirdweb-dev/react";
+import { ListingType, Marketplace } from "@thirdweb-dev/sdk";
 import { FaEthereum, FaRegHeart } from "react-icons/fa";
 
 import {
@@ -23,18 +30,41 @@ const Detail: NextPage<IDetail> = () => {
     const router = useRouter();
     const tokenId = router.query["tokenId"] as string;
 
+    // Get Wallet Address
+    const address = useAddress();
+
+    // Get Market Place Info
     const { contract: marketContract } = useContract<Marketplace>(
         MARKETPLACE_CONTRACT_ADDRESS
     );
     const { data: marketPlaceInfo, isLoading: IsMarketInfoLoading } =
         useListing(marketContract, tokenId);
 
+    // Get NFT Info
     const { contract: nftContract } = useContract(NFT_CONTRACT_ADDRESS);
     const { data: nftInfo, isLoading: isNftInfoLoading } = useNFT(
         nftContract,
         tokenId
     );
 
+    // handle Buy Now
+    const { mutate: buyNow, isLoading: isBuyingNow } =
+        useBuyNow(marketContract);
+
+    const handleBuyNow = (listingId: string) => {
+        if (!address) {
+            alert("Please Connect Your Metamask");
+            return;
+        }
+
+        buyNow({
+            type: ListingType.Direct,
+            id: listingId,
+            buyAmount: 1,
+        });
+    };
+
+    // Get The Exchange Rate : eth -> USD
     useEffect(() => {
         fetch("https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD")
             .then((res) => res.json())
@@ -141,17 +171,37 @@ const Detail: NextPage<IDetail> = () => {
                                             </span>
                                         )}
                                 </div>
+                                <p className="">
+                                    {`Remaining : ${
+                                        marketPlaceInfo?.quantity.toString() ||
+                                        ""
+                                    }`}
+                                </p>
                                 <div className="flex py-4">
-                                    <button className="basis-1/2 rounded-xl bg-blue-500 p-4 text-white hover:opacity-80">
-                                        Buy Now
-                                    </button>
+                                    {marketPlaceInfo?.quantity.toString() ===
+                                    "0" ? (
+                                        <button className="basis-1/2 cursor-not-allowed rounded-xl bg-rose-500 p-4 text-white hover:opacity-80">
+                                            Sold Out
+                                        </button>
+                                    ) : (
+                                        <button
+                                            className="basis-1/2 rounded-xl bg-blue-500 p-4 text-white hover:opacity-80"
+                                            onClick={() =>
+                                                handleBuyNow(tokenId)
+                                            }
+                                        >
+                                            Buy Now
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <Loading open={isNftInfoLoading || IsMarketInfoLoading} />
+            <Loading
+                open={isNftInfoLoading || IsMarketInfoLoading || isBuyingNow}
+            />
         </div>
     );
 };
