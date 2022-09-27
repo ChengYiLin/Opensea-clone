@@ -54,7 +54,7 @@ const Home: NextPage = () => {
                             </span>
                         </p>
                     </div>
-                    <div className="grid grid-cols-2 gap-8 px-4 sm:grid-cols-5 sm:px-0">
+                    <div className="mb-16 grid grid-cols-2 gap-8 px-4 sm:px-0 md:grid-cols-3 xl:grid-cols-5">
                         {isLoading ? (
                             Array.from(Array(10)).map((_, index) => (
                                 <div

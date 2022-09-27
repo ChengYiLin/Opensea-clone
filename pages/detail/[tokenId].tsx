@@ -84,9 +84,9 @@ const Detail: NextPage<IDetail> = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <div className="container mx-auto py-8">
-                <div className="flex gap-8">
+                <div className="flex flex-col gap-8 px-4 lg:flex-row">
                     <div className="basis-2/5">
-                        <div className="mx-auto w-4/5 overflow-hidden rounded-lg border-2 border-gray-300">
+                        <div className="mx-auto overflow-hidden rounded-lg border-2 border-gray-300 md:w-3/5 lg:w-4/5">
                             <div className="flex justify-between py-2 px-3 text-sm text-slate-500">
                                 <FaEthereum className="cursor-pointer hover:text-slate-800" />
                                 <FaRegHeart className="cursor-pointer hover:text-rose-300" />
@@ -180,12 +180,12 @@ const Detail: NextPage<IDetail> = () => {
                                 <div className="flex py-4">
                                     {marketPlaceInfo?.quantity.toString() ===
                                     "0" ? (
-                                        <button className="basis-1/2 cursor-not-allowed rounded-xl bg-rose-500 p-4 text-white hover:opacity-80">
+                                        <button className="cursor-not-allowed rounded-xl bg-rose-500 p-4 text-white hover:opacity-80 sm:basis-1/2">
                                             Sold Out
                                         </button>
                                     ) : (
                                         <button
-                                            className="basis-1/2 rounded-xl bg-blue-500 p-4 text-white hover:opacity-80"
+                                            className="basis-full rounded-xl bg-blue-500 p-4 text-white hover:opacity-80 sm:basis-1/2"
                                             onClick={() =>
                                                 handleBuyNow(tokenId)
                                             }
