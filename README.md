@@ -20,6 +20,13 @@ so that you can test my App 😆
 
 ![](/docs//images/ConnectWallect.gif)
 
+### Show the NFT Data through thirdweb
+
+![](/docs/images/ShowNftData.gif)
+
 ### Transaction
+
+-   Transaction through the MetaMask
+-   After Transaction is Finished, update the NFT Quantity without Reload
 
 ![](/docs/images/Transaction.gif)
