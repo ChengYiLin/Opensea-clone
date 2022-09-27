@@ -11,6 +11,7 @@ import {
     MARKETPLACE_CONTRACT_ADDRESS,
     NFT_CONTRACT_ADDRESS,
 } from "../../constant/app.constant";
+import Loading from "../../components/Loading";
 
 interface IDetail {
     tokenId: string;
@@ -45,9 +46,6 @@ const Detail: NextPage<IDetail> = () => {
                 setExchangeRate(null);
             });
     }, []);
-
-    // console.log(marketPlaceInfo);
-    console.log(nftInfo);
 
     return (
         <div>
@@ -84,25 +82,39 @@ const Detail: NextPage<IDetail> = () => {
                                 PHANTA BEAR
                             </p>
                         </Link>
-                        <h2 className="text-3xl font-bold">
-                            {marketPlaceInfo?.asset.name}
+                        <h2>
+                            {marketPlaceInfo?.asset.name ? (
+                                <span className="text-3xl font-bold">
+                                    {marketPlaceInfo.asset.name}
+                                </span>
+                            ) : (
+                                <span className="inline-block h-8 w-[200px] animate-pulse rounded-xl bg-slate-400" />
+                            )}
                         </h2>
+
                         <div className="pt-6 text-sm text-slate-400">
                             Owned by{" "}
-                            <span className="w inline-block text-lg">
-                                {marketPlaceInfo?.sellerAddress &&
+                            <span className="inline-block text-lg">
+                                {marketPlaceInfo?.sellerAddress ? (
                                     `${marketPlaceInfo?.sellerAddress.slice(
                                         0,
                                         5
                                     )}...${marketPlaceInfo?.sellerAddress.slice(
                                         marketPlaceInfo.sellerAddress.length - 4
-                                    )}`}
+                                    )}`
+                                ) : (
+                                    <span className="inline-block h-4 w-[80px] animate-pulse rounded-xl bg-slate-400" />
+                                )}
                             </span>
                         </div>
                         <div className="py-4">
-                            <p className="inline-block rounded-full bg-slate-400 py-2 px-4 text-sm text-slate-50">
-                                {nftInfo?.type}
-                            </p>
+                            {nftInfo?.type ? (
+                                <p className="inline-block rounded-full bg-slate-400 py-2 px-4 text-sm text-slate-50">
+                                    {nftInfo?.type}
+                                </p>
+                            ) : (
+                                <p className="inline-block h-9 w-20 animate-pulse rounded-full bg-slate-400" />
+                            )}
                         </div>
 
                         <div className="overflow-hidden rounded-lg border-2 border-gray-300">
@@ -139,6 +151,7 @@ const Detail: NextPage<IDetail> = () => {
                     </div>
                 </div>
             </div>
+            <Loading open={isNftInfoLoading || IsMarketInfoLoading} />
         </div>
     );
 };
