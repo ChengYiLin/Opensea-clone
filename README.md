@@ -11,7 +11,7 @@ This is the Web3 dApp building with
 -   **thirdweb** - (Web3 Develop Tools : [Link](thirdweb))
 
 This app is running on `Goerli` ETH Testing Network.<br>
-You can get some free `Goerli Eth` from [here](https://goerli-faucet.pk910.de/),<br>
+You can get some free `Goerli Eth` from [GOERLI FAUCET](https://goerlifaucet.com/) or [here](https://goerli-faucet.pk910.de/),<br>
 so that you can test my App 😆
 
 ## Demo
