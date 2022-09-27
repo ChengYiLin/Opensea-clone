@@ -6,6 +6,7 @@ import type { Marketplace } from "@thirdweb-dev/sdk";
 
 import { MARKETPLACE_CONTRACT_ADDRESS } from "../constant/app.constant";
 import NfcCard, { INfcCard } from "../components/NftCard";
+import Loading from "../components/Loading";
 
 const Home: NextPage = () => {
     const [nftList, setNftList] = useState<INfcCard[]>([]);
@@ -51,23 +52,35 @@ const Home: NextPage = () => {
                             </span>
                         </p>
                     </div>
-                    {isLoading ? (
-                        <p>Is Loading ....</p>
-                    ) : (
-                        <div className="grid grid-cols-2 gap-8 px-4 sm:grid-cols-5 sm:px-0">
-                            {nftList.map((nftInfo) => (
-                                <NfcCard
-                                    key={nftInfo.imageUrl}
-                                    imageUrl={nftInfo.imageUrl}
-                                    name={nftInfo.name}
-                                    price={nftInfo.price}
-                                    tokenId={nftInfo.tokenId}
-                                />
-                            ))}
-                        </div>
-                    )}
+                    <div className="grid grid-cols-2 gap-8 px-4 sm:grid-cols-5 sm:px-0">
+                        {isLoading ? (
+                            Array.from(Array(10)).map(() => (
+                                <div className="animate-pulse cursor-pointer overflow-hidden rounded-md border border-slate-300 shadow">
+                                    <div className="h-[280px] bg-slate-400" />
+                                    <div className="p-2">
+                                        <p className="h-4 w-[70%] bg-slate-400"></p>
+                                        <p className="mt-4 h-4 w-[40%] bg-slate-400"></p>
+                                    </div>
+                                    <div className="h-8" />
+                                </div>
+                            ))
+                        ) : (
+                            <>
+                                {nftList.map((nftInfo) => (
+                                    <NfcCard
+                                        key={nftInfo.imageUrl}
+                                        imageUrl={nftInfo.imageUrl}
+                                        name={nftInfo.name}
+                                        price={nftInfo.price}
+                                        tokenId={nftInfo.tokenId}
+                                    />
+                                ))}
+                            </>
+                        )}
+                    </div>
                 </div>
             </section>
+            <Loading open={isLoading} />
         </div>
     );
 };
