@@ -32,7 +32,7 @@ const Home: NextPage = () => {
             console.log(nfts);
             setNftList(nftListViewData);
         }
-    }, [JSON.stringify(nfts)]);
+    }, [nfts]);
 
     return (
         <div>
@@ -54,7 +54,7 @@ const Home: NextPage = () => {
                             </span>
                         </p>
                     </div>
-                    <div className="mb-16 grid grid-cols-2 gap-8 px-4 sm:px-0 md:grid-cols-3 xl:grid-cols-5">
+                    <div className="mb-16 grid grid-cols-1 gap-8 px-4 sm:px-0 md:grid-cols-3 xl:grid-cols-5">
                         {isLoading ? (
                             Array.from(Array(10)).map((_, index) => (
                                 <div
